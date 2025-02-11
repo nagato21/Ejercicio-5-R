@@ -61,11 +61,21 @@ ggplot(peliculas, aes(x = duration, y = release_year)) +
 
 ```{r cars} 
 #Ejercicio 3
+
+# Convertir la columna 'date_added' a formato de fecha
+netflix_data$date_added <- as.Date(netflix_data$date_added, format="%Y-%m-%d")
+
+# Crear la nueva columna 'added_after_2020'
+netflix_data$added_after_2020 <- as.numeric(format(netflix_data$date_added, "%Y")) > 2020
+
 # 1. Crear una nueva columna para títulos añadidos después de 2020
 netflix_data$added_after_2020 <- as.numeric(format(netflix_data$date_added, "%Y")) > 2020
+
 #Ordena los títulos por la fecha en que fueron añadidos (date_added).
 netflix_data <- netflix_data[order(netflix_data$date_added), ]
+
 #identifica el director con más títulos en la plataforma.
+
 install.packages("dplyr")
 library(dplyr)
 
