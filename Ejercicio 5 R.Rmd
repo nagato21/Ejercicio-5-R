@@ -1,0 +1,89 @@
+---
+title: "Ejercicio 5"
+author: "natan"
+date: "2025-02-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## EJERCICIO 5
+
+1 Análisis de Datos con el Dataset de Netflix:
+• Filtra los títulos que son películas (type == "Movie").
+• Calcula la cantidad de películas por país.
+• Determina el año con más estrenos en Netflix (release_year).
+2 Visualización Básica:
+• Crea un gráfico de barras para mostrar la cantidad de títulos por categoría 
+(listed_in).
+• Crea un histograma para visualizar la distribución de los años de lanzamiento 
+(release_year).
+• Crea un gráfico de dispersión para comparar la duración de las películas.
+3 Manipulación de Datos:
+• Crea una nueva columna que indique si un título fue añadido a Netflix después 
+de 2020.
+• Ordena los títulos por la fecha en que fueron añadidos (date_added).
+• Identifica el director con más títulos en la plataforma.
+
+```{r cars}
+netflix_data <- read.csv("C:\\Users\\AMD\\Downloads\\netflix_titles.csv")
+# 2. Filtra las películas
+peliculas <- netflix_data[netflix_data$type == "Movie", ]
+# 3. Calcula la cantidad de películas por país
+cantidad_peliculas_pais <- table(peliculas$country)
+print(cantidad_peliculas_pais)
+# 4. Determina el año con más estrenos
+año_mas_estrenos <- names(which.max(table(peliculas$release_year)))
+print(año_mas_estrenos)
+```
+
+```{r cars}
+# 1. Gráfico de barras para la cantidad de títulos por categoría
+install.packages("ggplot2")
+library(ggplot2)
+ggplot(netflix_data, aes(x = listed_in)) + 
+  geom_bar() +
+  labs(title = "Cantidad de Títulos por Categoría", x = "Categoría", y = "Cantidad")
+
+# 2. Histograma para la distribución de los años de lanzamiento
+ggplot(netflix_data, aes(x = release_year)) + 
+  geom_histogram(binwidth = 1) +
+  labs(title = "Distribución de Años de Lanzamiento", x = "Año de Lanzamiento", y = "Frecuencia")
+
+# 3. Gráfico de dispersión para la duración de las películas
+ggplot(peliculas, aes(x = duration, y = release_year)) + 
+  geom_point() +
+  labs(title = "Duración vs Año de Lanzamiento", x = "Duración", y = "Año de Lanzamiento")
+```
+
+
+```{r cars} 
+#Ejercicio 3
+# 1. Crear una nueva columna para títulos añadidos después de 2020
+netflix_data$added_after_2020 <- as.numeric(format(netflix_data$date_added, "%Y")) > 2020
+#Ordena los títulos por la fecha en que fueron añadidos (date_added).
+netflix_data <- netflix_data[order(netflix_data$date_added), ]
+#identifica el director con más títulos en la plataforma.
+install.packages("dplyr")
+library(dplyr)
+
+# Calcular la cantidad de valores únicos en cada columna
+column_counts <- sapply(netflix_data, n_distinct)
+
+# Encontrar la columna con la mayor cantidad de valores únicos
+max_count_column <- names(column_counts)[which.max(column_counts)]
+
+# Mostrar el resultado
+cat("La columna con la mayor cantidad de títulos es:", max_count_column, "\n")
+```
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
